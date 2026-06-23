@@ -1,0 +1,13 @@
+# Build output
+target/
+dependency-reduced-pom.xml
+
+# IDE metadata
+.idea/
+*.iml
+.vscode/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.log

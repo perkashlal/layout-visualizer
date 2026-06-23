@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="layoutvisualizer.Controller">
+  <children>
+    <MenuBar VBox.vgrow="NEVER">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Close" />
+            <MenuItem mnemonicParsing="false" onAction="#saveLayout" text="Save As..." />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+      <SplitPane fx:id="splitPane" onDragDropped="#dropFile" onDragOver="#dragFile" VBox.vgrow="SOMETIMES">
+         <VBox.margin>
+            <Insets bottom="50.0" />
+         </VBox.margin>
+         <items>
+            <ScrollPane fx:id="scroller" fitToHeight="true" fitToWidth="true" pannable="false" prefHeight="200.0" prefWidth="200.0">
+               <padding>
+                  <Insets bottom="50.0" />
+               </padding>
+               <content>
+                  <Group fx:id="group">
+                     <children>
+                       <AnchorPane fx:id="pane" prefHeight="308.0" prefWidth="627.0">
+                           <children>
+                              <Label fx:id="labelAnchor" layoutX="563.0" layoutY="237.0" text="Clicca upload o trascina un file XML per visualizzare un tracciato" textFill="#0000007a" />
+                           </children></AnchorPane>
+                     </children>
+                  </Group>
+               </content>
+            </ScrollPane>
+         </items>
+      </SplitPane>
+      <AnchorPane maxHeight="-Infinity" prefHeight="44.0" prefWidth="640.0">
+         <children>
+            <Button id="downloadXML" fx:id="download" layoutX="300.0" layoutY="9.0" mnemonicParsing="false" onAction="#downloadXML" text="Download" />
+            <Button id="upload" fx:id="upload" layoutX="216.0" layoutY="9.0" mnemonicParsing="false" onAction="#uploadXML" text="Upload" />
+            <TextField id="text" fx:id="cutText" layoutX="606.0" layoutY="9.0" />
+            <Button id="addCut" fx:id="addCut" layoutX="756.0" layoutY="9.0" mnemonicParsing="false" onAction="#addCut" text="Aggiungi Taglio" />
+            <Button id="removeCut" fx:id="removeCut" layoutX="856.0" layoutY="9.0" mnemonicParsing="false" onAction="#removeCut" text="Rimuovi Taglio" />
+            <TextField id="orderText" fx:id="orderText" layoutX="1066.0" layoutY="9.0" />
+            <Button id="reloadButton" fx:id="reloadButton" layoutX="1216.0" layoutY="9.0" mnemonicParsing="false" onAction="#reload" text="Ricarica" />
+            <Button id="rotatePointButton" fx:id="rotatePointButton" layoutX="1286.0" layoutY="9.0" mnemonicParsing="false" onAction="#rotatePoint" text="Ruota scambio" />
+            <Button id="clearButton" fx:id="clearButton" layoutX="1395.0" layoutY="9.0" mnemonicParsing="false" onAction="#clear" text="Clear" />
+            <Slider fx:id="slider" layoutX="14.0" layoutY="15.0" showTickMarks="true" />
+         </children>
+      </AnchorPane>
+  </children>
+</VBox>
