@@ -9,7 +9,8 @@ The project is based on Simone Casini's thesis work, "Layout visualizer for rail
 - Load an interlocking network from XML.
 - Visualize linear track sections, points/switches, and markerboards.
 - Manually adjust the generated layout.
-- Rotate a point branch by ID with the `Ruota scambio` control.
+- Rotate a selected track element by ID with the `Ruota +90` and `Ruota -90` controls.
+- Flip a point branch manually with right click on the point label.
 - Insert single cuts and cluster cuts.
 - Export the displayed layout as PNG.
 - Download XML files for the generated subnetworks.
@@ -65,7 +66,8 @@ The sample `lvr_1.xml` can be used to test the application.
 - Use the first text field to enter a cut such as `533-PM01U`.
 - Use `;` for cluster cuts, for example `802-PM04U;801-PM04U`.
 - Use the second text field to enter a starting track ID and click `Ricarica`.
-- Enter a point ID in the second text field and click `Ruota scambio` to flip the secondary branch orientation.
+- Enter a track or point ID in the second text field and click `Ruota +90` or `Ruota -90` to rotate that element.
+- Right-click a point label to flip the secondary branch orientation.
 - Click `Download` to generate XML outputs after applying cuts.
 
 ## Current Improvement Focus
@@ -76,13 +78,12 @@ Large or complex layouts can still require manual correction because the XML inp
 - the desired distance between diverging branches;
 - explicit rotation or geometry metadata for track elements.
 
-This version starts addressing that limitation by exposing branch rotation directly in the UI and keeping the exported neighbor order aligned with the displayed point orientation.
+This version starts addressing that limitation by exposing element rotation directly in the UI as a manual visual correction. The rotation changes the displayed layout only; it does not change the XML topology exported by the cut/download workflow.
 
 ## Roadmap
 
-- Add automatic point-orientation selection to reduce crossings and overlaps.
+- Add automatic point-orientation selection to reduce crossings and overlaps across larger test networks.
 - Add configurable branch spacing for dense layouts.
 - Add a layout quality score based on crossings, overlaps, and manual edits required.
 - Add regression tests using representative XML layouts.
 - Remove duplicated legacy resources under `src/main/java` after confirming no IDE workflow depends on them.
-

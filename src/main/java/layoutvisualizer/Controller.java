@@ -328,7 +328,6 @@ public class Controller {
     public void reload(){
         String user_input = this.orderText.getText();
         try{
-            this.getAnchorPane().getChildren().clear();
             model.reload(user_input, pane, group, scroller, slider);
         }catch(Exception ex){
             ex.printStackTrace();
@@ -347,6 +346,23 @@ public class Controller {
         String userInput = this.orderText.getText();
         if(userInput != null && userInput.trim().length() > 0){
             model.rotatePoint(userInput.trim());
+        }
+    }
+
+    @FXML
+    public void rotateElementClockwise(){
+        rotateElement(90.0);
+    }
+
+    @FXML
+    public void rotateElementCounterClockwise(){
+        rotateElement(-90.0);
+    }
+
+    private void rotateElement(double degrees){
+        String userInput = this.orderText.getText();
+        if(userInput != null && userInput.trim().length() > 0){
+            model.rotateElement(userInput.trim(), degrees);
         }
     }
     

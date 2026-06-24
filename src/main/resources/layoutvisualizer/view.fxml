@@ -84,13 +84,14 @@
          <children>
             <Button id="downloadXML" fx:id="download" layoutX="300.0" layoutY="9.0" mnemonicParsing="false" onAction="#downloadXML" text="Download" />
             <Button id="upload" fx:id="upload" layoutX="216.0" layoutY="9.0" mnemonicParsing="false" onAction="#uploadXML" text="Upload" />
-            <TextField id="text" fx:id="cutText" layoutX="606.0" layoutY="9.0" />
-            <Button id="addCut" fx:id="addCut" layoutX="756.0" layoutY="9.0" mnemonicParsing="false" onAction="#addCut" text="Aggiungi Taglio" />
-            <Button id="removeCut" fx:id="removeCut" layoutX="856.0" layoutY="9.0" mnemonicParsing="false" onAction="#removeCut" text="Rimuovi Taglio" />
-            <TextField id="orderText" fx:id="orderText" layoutX="1066.0" layoutY="9.0" />
-            <Button id="reloadButton" fx:id="reloadButton" layoutX="1216.0" layoutY="9.0" mnemonicParsing="false" onAction="#reload" text="Ricarica" />
-            <Button id="rotatePointButton" fx:id="rotatePointButton" layoutX="1286.0" layoutY="9.0" mnemonicParsing="false" onAction="#rotatePoint" text="Ruota scambio" />
-            <Button id="clearButton" fx:id="clearButton" layoutX="1395.0" layoutY="9.0" mnemonicParsing="false" onAction="#clear" text="Clear" />
+            <TextField id="text" fx:id="cutText" layoutX="560.0" layoutY="9.0" />
+            <Button id="addCut" fx:id="addCut" layoutX="710.0" layoutY="9.0" mnemonicParsing="false" onAction="#addCut" text="Aggiungi Taglio" />
+            <Button id="removeCut" fx:id="removeCut" layoutX="810.0" layoutY="9.0" mnemonicParsing="false" onAction="#removeCut" text="Rimuovi Taglio" />
+            <TextField id="orderText" fx:id="orderText" layoutX="1005.0" layoutY="9.0" />
+            <Button id="reloadButton" fx:id="reloadButton" layoutX="1155.0" layoutY="9.0" mnemonicParsing="false" onAction="#reload" text="Ricarica" />
+            <Button id="rotateClockwiseButton" fx:id="rotateClockwiseButton" layoutX="1225.0" layoutY="9.0" mnemonicParsing="false" onAction="#rotateElementClockwise" text="Ruota +90" />
+            <Button id="rotateCounterClockwiseButton" fx:id="rotateCounterClockwiseButton" layoutX="1311.0" layoutY="9.0" mnemonicParsing="false" onAction="#rotateElementCounterClockwise" text="Ruota -90" />
+            <Button id="clearButton" fx:id="clearButton" layoutX="1397.0" layoutY="9.0" mnemonicParsing="false" onAction="#clear" text="Clear" />
             <Slider fx:id="slider" layoutX="14.0" layoutY="15.0" showTickMarks="true" />
          </children>
       </AnchorPane>

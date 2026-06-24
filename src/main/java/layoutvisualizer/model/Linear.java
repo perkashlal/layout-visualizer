@@ -306,6 +306,21 @@ public class Linear extends GraphicTrack{
     }
 
     @Override
+    public void rotate(double degrees) {
+        if(line == null){
+            return;
+        }
+        double pivotX = (line.getStartX() + line.getEndX()) / 2.0;
+        double pivotY = (line.getStartY() + line.getEndY()) / 2.0;
+        rotateLineAround(line, pivotX, pivotY, degrees);
+        rotateNodeAround(labelLine, pivotX, pivotY, degrees);
+        rotateNodeAround(imvLeft, pivotX, pivotY, degrees);
+        rotateNodeAround(labelLeft, pivotX, pivotY, degrees);
+        rotateNodeAround(imvRight, pivotX, pivotY, degrees);
+        rotateNodeAround(labelRight, pivotX, pivotY, degrees);
+    }
+
+    @Override
     public void clean() {
         if(imvLeft != null){
             imvLeft.layoutXProperty().unbind();

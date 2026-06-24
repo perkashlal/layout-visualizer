@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -79,6 +80,52 @@ public class GraphicTrack {
         this.line.setStartY(newHeight);
         this.line.setEndY(newHeight);
         this.labelLine.setLayoutY(newHeight);
+    }
+
+    public void rotate(double degrees){
+        if(line == null){
+            return;
+        }
+        double pivotX = (line.getStartX() + line.getEndX()) / 2.0;
+        double pivotY = (line.getStartY() + line.getEndY()) / 2.0;
+        rotateLineAround(line, pivotX, pivotY, degrees);
+        rotateNodeAround(labelLine, pivotX, pivotY, degrees);
+    }
+
+    protected void rotateLineAround(Line lineToRotate, double pivotX, double pivotY, double degrees){
+        if(lineToRotate == null){
+            return;
+        }
+        double[] start = rotatePoint(lineToRotate.getStartX(), lineToRotate.getStartY(), pivotX, pivotY, degrees);
+        double[] end = rotatePoint(lineToRotate.getEndX(), lineToRotate.getEndY(), pivotX, pivotY, degrees);
+        lineToRotate.setStartX(start[0]);
+        lineToRotate.setStartY(start[1]);
+        lineToRotate.setEndX(end[0]);
+        lineToRotate.setEndY(end[1]);
+    }
+
+    protected void rotateNodeAround(Node node, double pivotX, double pivotY, double degrees){
+        if(node == null){
+            return;
+        }
+        Bounds bounds = node.getBoundsInParent();
+        double centerX = (bounds.getMinX() + bounds.getMaxX()) / 2.0;
+        double centerY = (bounds.getMinY() + bounds.getMaxY()) / 2.0;
+        double[] rotatedCenter = rotatePoint(centerX, centerY, pivotX, pivotY, degrees);
+        node.setLayoutX(node.getLayoutX() + rotatedCenter[0] - centerX);
+        node.setLayoutY(node.getLayoutY() + rotatedCenter[1] - centerY);
+        node.setRotate(node.getRotate() + degrees);
+    }
+
+    protected double[] rotatePoint(double x, double y, double pivotX, double pivotY, double degrees){
+        double radians = Math.toRadians(degrees);
+        double sin = Math.sin(radians);
+        double cos = Math.cos(radians);
+        double translatedX = x - pivotX;
+        double translatedY = y - pivotY;
+        double rotatedX = translatedX * cos - translatedY * sin;
+        double rotatedY = translatedX * sin + translatedY * cos;
+        return new double[]{rotatedX + pivotX, rotatedY + pivotY};
     }
 
     public void clean(){

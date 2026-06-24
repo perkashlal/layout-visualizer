@@ -83,8 +83,9 @@ public class ModelComponent {
             anchorPane.getChildren().clear();
             draggableMaker.setScrollPane(scroller);
             TrackSection start = startTracks.get(0);
-            if(user_input.length() > 0){
-                start = net.getTrackSections().get(user_input);
+            String startTrackId = user_input != null ? user_input.trim() : "";
+            if(startTrackId.length() > 0){
+                start = net.getTrackSections().get(startTrackId);
                 if(start == null){
                     start = startTracks.get(0);
                 }
@@ -1300,6 +1301,28 @@ public class ModelComponent {
     }
 
     public void reload(String user_input, AnchorPane pane, Group group, ScrollPane scroller, Slider slider) {
+        if(this.xmi == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Caricare un file XML prima di ricaricare il layout.");
+            alert.showAndWait();
+            return;
+        }
+        String startTrackId = user_input != null ? user_input.trim() : "";
+        if(startTrackId.length() > 0 && this.net != null && this.net.getTrackSections() != null){
+            TrackSection startTrack = this.net.getTrackSections().get(startTrackId);
+            if(startTrack == null){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("ID non trovato: " + startTrackId);
+                alert.showAndWait();
+                return;
+            }
+            if(!isValidReloadStartTrack(startTrack)){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Ricarica richiede una traccia lineare di bordo. Per ruotare questo elemento usa Ruota +90 o Ruota -90.");
+                alert.showAndWait();
+                return;
+            }
+        }
         if(compsBase.size() > 0){
             for(Linear c : compsBase.values()){
                 c.clean();
@@ -1315,6 +1338,12 @@ public class ModelComponent {
         parseXML(this.xmi, pane, group, scroller, slider, user_input);
     }
 
+    private boolean isValidReloadStartTrack(TrackSection track) {
+        return track != null
+                && !track.isPoint()
+                && (track.getDown() == null || track.getDown().getRef() == null || track.getDown().getRef().length() == 0);
+    }
+
     public void rotatePoint(String pointId) {
         Point point = pointsBase.get(pointId);
         if(point != null){
@@ -1322,6 +1351,21 @@ public class ModelComponent {
         }else{
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Scambio non trovato: " + pointId);
+            alert.showAndWait();
+        }
+    }
+
+    public void rotateElement(String elementId, double degrees) {
+        GraphicTrack track = compsBase.get(elementId);
+        if(track == null){
+            track = pointsBase.get(elementId);
+        }
+
+        if(track != null){
+            track.rotate(degrees);
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Elemento non trovato: " + elementId);
             alert.showAndWait();
         }
     }
