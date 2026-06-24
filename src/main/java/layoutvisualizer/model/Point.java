@@ -179,6 +179,20 @@ public class Point extends GraphicTrack{
         }
     }
 
+    public void setMinusBranchAbove(boolean minusAbovePlus){
+        Boolean current = isMinusBranchAbovePlus();
+        if(current != null && current.booleanValue() != minusAbovePlus){
+            rotateBranch();
+        }
+    }
+
+    private Boolean isMinusBranchAbovePlus(){
+        if(this.minus == null || this.plus == null || this.minus.line == null || this.plus.line == null){
+            return null;
+        }
+        return this.minus.line.getStartY() < this.plus.line.getStartY();
+    }
+
     @Override
     public void rotate(double degrees){
         if(line == null){

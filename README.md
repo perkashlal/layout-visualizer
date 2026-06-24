@@ -10,6 +10,7 @@ The project is based on Simone Casini's thesis work, "Layout visualizer for rail
 - Visualize linear track sections, points/switches, and markerboards.
 - Manually adjust the generated layout.
 - Rotate a selected track element by ID with the `Ruota +90` and `Ruota -90` controls.
+- Automatically place a point's minus branch above or below the plus branch when XML direction metadata or neighbor order is available.
 - Flip a point branch manually with right click on the point label.
 - Insert single cuts and cluster cuts.
 - Export the displayed layout as PNG.
@@ -58,6 +59,20 @@ The application expects an XMI/XML file containing:
 - `neighbor` elements with `ref` and `side`.
 - `markerboard` elements with `id`, `track`, `distance`, and `mounted`.
 
+Point `trackSection` elements may optionally include:
+
+```xml
+minusBranchDirection="up"
+```
+
+or:
+
+```xml
+minusBranchDirection="down"
+```
+
+When this attribute is not present, the visualizer uses the order of the `plus` and `minus` neighbors as a fallback: if `minus` appears before `plus`, the minus branch is placed above; otherwise the traditional plus-above-minus layout is preserved.
+
 The sample `lvr_1.xml` can be used to test the application.
 
 ## Layout Controls
@@ -78,11 +93,11 @@ Large or complex layouts can still require manual correction because the XML inp
 - the desired distance between diverging branches;
 - explicit rotation or geometry metadata for track elements.
 
-This version starts addressing that limitation by exposing element rotation directly in the UI as a manual visual correction. The rotation changes the displayed layout only; it does not change the XML topology exported by the cut/download workflow.
+This version starts addressing that limitation by exposing element rotation directly in the UI as a manual visual correction and by reading switch branch direction hints from XML. Rotation changes the displayed layout only; branch direction metadata can be preserved through optional XML attributes and point neighbor order.
 
 ## Roadmap
 
-- Add automatic point-orientation selection to reduce crossings and overlaps across larger test networks.
+- Extend automatic point-orientation selection with layout scoring to reduce crossings and overlaps across larger test networks.
 - Add configurable branch spacing for dense layouts.
 - Add a layout quality score based on crossings, overlaps, and manual edits required.
 - Add regression tests using representative XML layouts.

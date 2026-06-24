@@ -746,6 +746,11 @@ public class UtilityDraw {
             stem = pointComponents.get(point.getStem().getRef());
         }
         pc.setStem(stem);
+
+        Boolean minusAbovePlus = point.shouldPlaceMinusAbovePlus();
+        if(minusAbovePlus != null){
+            pc.setMinusBranchAbove(minusAbovePlus);
+        }
         
         pc.rightClickOnLabel();
         pc.setLines(anch);

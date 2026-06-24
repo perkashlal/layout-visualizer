@@ -20,6 +20,9 @@ public class TrackSection {
     @XmlAttribute(name="length")
     private String length;
 
+    @XmlAttribute(name="minusBranchDirection")
+    private String minusBranchDirection;
+
     @XmlElement(name="neighbor")
     private List<Neighbor> neighbors;
  
@@ -104,6 +107,12 @@ public class TrackSection {
     public void setLength(String length) {
         this.length = length;
     }
+    public String getMinusBranchDirection() {
+        return minusBranchDirection;
+    }
+    public void setMinusBranchDirection(String minusBranchDirection) {
+        this.minusBranchDirection = minusBranchDirection;
+    }
     public List<Neighbor> getNeighbors() {
         return neighbors;
     }
@@ -178,12 +187,14 @@ public class TrackSection {
                 addIfPresent(newNeighbors, minusRef);
                 addIfPresent(newNeighbors, plusRef);
                 addIfPresent(newNeighbors, stemRef);
+                minusBranchDirection = "up";
             }
             //else point is LOW thus enforcing plus to be first
             else {
                 addIfPresent(newNeighbors, plusRef);
                 addIfPresent(newNeighbors, minusRef);
                 addIfPresent(newNeighbors, stemRef);
+                minusBranchDirection = "down";
             }
             //now reassign neighbors to newNeighbors
             neighbors = newNeighbors;
@@ -204,6 +215,39 @@ public class TrackSection {
         return false;
     }
 
+    public Boolean shouldPlaceMinusAbovePlus(){
+        if(!isPoint()){
+            return null;
+        }
+        String direction = minusBranchDirection != null ? minusBranchDirection.trim().toLowerCase() : "";
+        if(direction.equals("up") || direction.equals("above") || direction.equals("high")){
+            return true;
+        }
+        if(direction.equals("down") || direction.equals("below") || direction.equals("low")){
+            return false;
+        }
+
+        int minusIndex = neighborIndex("minus");
+        int plusIndex = neighborIndex("plus");
+        if(minusIndex >= 0 && plusIndex >= 0 && minusIndex != plusIndex){
+            return minusIndex < plusIndex;
+        }
+        return null;
+    }
+
+    private int neighborIndex(String side){
+        if(neighbors == null){
+            return -1;
+        }
+        for(int i = 0; i < neighbors.size(); i++){
+            Neighbor neighbor = neighbors.get(i);
+            if(neighbor != null && neighbor.getSide() != null && neighbor.getSide().equalsIgnoreCase(side)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public static TrackSection deepCopy(TrackSection old) {
         TrackSection newTrack = new TrackSection();
         if(old == null){
@@ -212,6 +256,7 @@ public class TrackSection {
         newTrack.setId(old.getId());
         newTrack.setType(old.getType());
         newTrack.setLength(old.getLength());
+        newTrack.setMinusBranchDirection(old.getMinusBranchDirection());
         
         List<Neighbor> ns = new ArrayList<Neighbor>();
         for(Neighbor n : old.getNeighbors()){
