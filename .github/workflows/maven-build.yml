@@ -1,0 +1,66 @@
+name: Maven Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build JavaFX application
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Build shaded JAR
+        run: mvn -B -DskipTests clean package
+
+      - name: Verify shaded JAR manifest
+        shell: pwsh
+        run: |
+          $jar = "target/layout_visualizer-1.0-SNAPSHOT-shaded.jar"
+          if (!(Test-Path $jar)) {
+            throw "Shaded JAR was not generated: $jar"
+          }
+
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $zip = [System.IO.Compression.ZipFile]::OpenRead($jar)
+          try {
+            $entry = $zip.GetEntry("META-INF/MANIFEST.MF")
+            if ($null -eq $entry) {
+              throw "JAR manifest not found."
+            }
+
+            $reader = [System.IO.StreamReader]::new($entry.Open())
+            try {
+              $manifest = $reader.ReadToEnd()
+            } finally {
+              $reader.Close()
+            }
+
+            Write-Output $manifest
+            if ($manifest -notmatch "Main-Class: layoutvisualizer.Launcher") {
+              throw "Unexpected JAR main class. Expected layoutvisualizer.Launcher."
+            }
+          } finally {
+            $zip.Dispose()
+          }
+
+      - name: Upload shaded JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: layout-visualizer-shaded-jar
+          path: target/layout_visualizer-1.0-SNAPSHOT-shaded.jar
+
