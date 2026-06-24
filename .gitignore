@@ -6,6 +6,9 @@ dependency-reduced-pom.xml
 .idea/
 *.iml
 .vscode/
+.classpath
+.project
+.settings/
 
 # OS/editor noise
 .DS_Store
